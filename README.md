@@ -12,15 +12,15 @@
 </div>
 
 <div style="display: flex; justify-content: space-around;">
-  <img src="https://raw.githubusercontent.com/Atem83/Youtube-Comment-Export/main/images/GUI light theme.png" alt="GUI Light Theme" style="width: 50%;">
-  <img src="https://raw.githubusercontent.com/Atem83/Youtube-Comment-Export/main/images/GUI dark theme.png" alt="GUI Dark Theme" style="width: 50%;">
+  <img src="https://raw.githubusercontent.com/Atem83/Youtube-Comment-Export/main/images/GUI light theme.png" alt="GUI Light Theme" style="width: 25%;">
+  <img src="https://raw.githubusercontent.com/Atem83/Youtube-Comment-Export/main/images/GUI dark theme.png" alt="GUI Dark Theme" style="width: 25%;">
 </div>
 
 <br>
 
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/Atem83/Youtube-Comment-Export/main/images/GUI Settings.png" alt="GUI Settings" style="width: 50%;">
+<img src="https://raw.githubusercontent.com/Atem83/Youtube-Comment-Export/main/images/GUI Settings.png" alt="GUI Settings" style="width: 25%;">
 
 </div>
 
