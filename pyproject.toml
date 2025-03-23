@@ -3,7 +3,7 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.tbump]
-github_url = "https://github.com/Atem83/Youtube-Comments-Export"
+github_url = "https://github.com/Atem83/Youtube-Comment-Export"
 
 [tool.tbump.version]
 current = "0.1.0"

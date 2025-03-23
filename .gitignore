@@ -4,6 +4,7 @@ __pycache__/
 
 # Distribution / packaging
 dist/
+Youtube_Comment_Export.egg-info/
 publish.py
 
 # Configuration de pyinstaller
