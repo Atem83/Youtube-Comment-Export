@@ -1,0 +1,16 @@
+# Byte-compiled / optimized / DLL files
+*.pyc
+__pycache__/
+
+# Distribution / packaging
+dist/
+publish.py
+
+# Configuration de pyinstaller
+config pyinstaller.json
+
+# Others
+launch.py
+
+# temp
+README.md
