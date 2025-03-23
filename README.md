@@ -11,35 +11,30 @@
   
 </div>
 
-<div style="display: flex; justify-content: space-around;">
-  <img src="https://raw.githubusercontent.com/Atem83/Youtube-Comment-Export/main/images/GUI light theme.png" alt="GUI Light Theme" style="width: 25%;">
-  <img src="https://raw.githubusercontent.com/Atem83/Youtube-Comment-Export/main/images/GUI dark theme.png" alt="GUI Dark Theme" style="width: 25%;">
+<div align="center">
+  <div style="display: flex; justify-content: space-around;">
+    <img src="https://raw.githubusercontent.com/Atem83/Youtube-Comment-Export/main/images/GUI light theme.png" alt="GUI Light Theme" style="width: 35%;">
+    <img src="https://raw.githubusercontent.com/Atem83/Youtube-Comment-Export/main/images/GUI dark theme.png" alt="GUI Dark Theme" style="width: 35%;">
+  </div>
 </div>
 
 <br>
 
 <div align="center">
-
-<img src="https://raw.githubusercontent.com/Atem83/Youtube-Comment-Export/main/images/GUI Settings.png" alt="GUI Settings" style="width: 25%;">
-
+  <img src="https://raw.githubusercontent.com/Atem83/Youtube-Comment-Export/main/images/GUI Settings.png" alt="GUI Settings" style="width: 35%;">
 </div>
 
 <h2 align="center"> Excel Main Sheet </h2>
 
 <div align="center">
-
-<img src="https://raw.githubusercontent.com/Atem83/Youtube-Comment-Export/main/images/Excel videos sheet.png" alt="Excel videos sheet" style="width: 100%;">
-
+  <img src="https://raw.githubusercontent.com/Atem83/Youtube-Comment-Export/main/images/Excel videos sheet.png" alt="Excel videos sheet" style="width: 100%;">
 </div>
 
 <h2 align="center"> Excel Comments Sheet </h2>
 
 <div align="center">
-
-<img src="https://raw.githubusercontent.com/Atem83/Youtube-Comment-Export/main/images/Excel comments sheet.png" alt="Excel comments sheet" style="width: 100%;">
-
+  <img src="https://raw.githubusercontent.com/Atem83/Youtube-Comment-Export/main/images/Excel comments sheet.png" alt="Excel comments sheet" style="width: 100%;">
 </div>
-
 
 <h2 align="center"> Features </h2>
 
@@ -62,9 +57,7 @@ pip install Youtube-Comment-Export
 
 [<img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/Atem83/Youtube-Comment-Export?&color=green&label=Source%20Code&logo=Python&logoColor=yellow&style=for-the-badge"  width="300">](https://github.com/Atem83/Youtube-Comment-Export/archive/refs/heads/main.zip)
 
-
 </div>
-
 
 <h2 align="center"> GUI Usage </h2>
 
