@@ -11,6 +11,3 @@ config pyinstaller.json
 
 # Others
 launch.py
-
-# temp
-README.md
