@@ -12,12 +12,17 @@ class App(QMainWindow):
     def __init__(self):
         # Initialize QApplication
         self.qapp = QApplication(sys.argv)
+        self.yt = yt_manager()
         
         # Initialize QMainWindow
         super().__init__()
         self.setWindowTitle(metadata.name)
-        #self.setGeometry(200, 200, 360, 400)
-        self.yt = yt_manager()
+        self.setGeometry(
+            self.yt.settings.window_size[0],
+            self.yt.settings.window_size[1],
+            self.yt.settings.window_size[2],
+            self.yt.settings.window_size[3]
+        )
         
         # Create the main window
         self.main_frame = MainWindow(self)
@@ -27,8 +32,9 @@ class App(QMainWindow):
         self.menu_bar = MenuBar(self)
         self.setMenuBar(self.menu_bar)
         
-        # Connect the window resize event
+        # Connect the window resize event and move event
         self.resizeEvent = self.on_resize
+        self.moveEvent = self.on_move
         
         # Allow the window to accept drag-and-drop events for files
         self.setAcceptDrops(True)
@@ -41,8 +47,25 @@ class App(QMainWindow):
         
     def on_resize(self, event):
         """Execute actions when the main window is resized."""
-        #print(f"Dimensions of the window : {self.width()}x{self.height()}")
+        self.yt.settings.window_size = (
+            self.x(),
+            self.y(),
+            self.width(), 
+            self.height()
+            )
+        self.yt.settings.save()
         super().resizeEvent(event)
+        
+    def on_move(self, event):
+        """Execute actions when the main window is moved."""
+        self.yt.settings.window_size = (
+            self.x(),
+            self.y(),
+            self.width(), 
+            self.height()
+            )
+        self.yt.settings.save()
+        super().moveEvent(event)
     
     def dragEnterEvent(self, event):
         """Manage the drag-and-drop event.

@@ -11,6 +11,7 @@ class Settings():
         self._max_sheets = 250
         self._date_format = 'DD/MM/YYYY'
         self._auto_update = True
+        self._window_size = (100, 100, 320, 170)
     
     @property
     def channel_url(self):
@@ -122,6 +123,19 @@ class Settings():
             return
         self._auto_update = value
 
+    @property
+    def window_size(self):
+        """Size of the window."""
+        return self._window_size
+
+    @window_size.setter
+    def window_size(self, value):
+        if not isinstance(value, tuple):
+            return
+        elif len(value) != 4:
+            return
+        self._window_size = value
+
     def path_save(self):
         """Path to the saved parameters file."""
         file = "yt_parameters.json"
@@ -138,7 +152,8 @@ class Settings():
             'bg_highlight': self.bg_highlight,
             'max_sheets': self.max_sheets,
             'date_format': self.date_format,
-            'auto_update': self.auto_update
+            'auto_update': self.auto_update,
+            'window_size': self.window_size
             }
         path_file = self.path_save()
 
@@ -167,6 +182,7 @@ class Settings():
                 self.max_sheets = settings["max_sheets"]
                 self.date_format = settings["date_format"]
                 self.auto_update = settings["auto_update"]
+                self.window_size = tuple(settings["window_size"])
         except:
             print("Load failed, the parameters by default will be used.")
             return
