@@ -81,9 +81,24 @@ class MainWindow(QtWidgets.QFrame):
             
     def execute(self):
         """Execute the program."""
-        self.app.yt.settings.channel_url = self.url_input.text()
+        if self.url_input.text() == "":
+            self.app.yt.settings.channel_url = None
+        else:
+            self.app.yt.settings.channel_url = self.url_input.text()
         old_saves = self.old_save_input.text().split(";")
         directory = self.directory_input.text()
+        
+        try:
+            self.app.yt.refresh()
+        except RuntimeError as e:
+            self.app.yt.settings.save()
+            run_error("The URL is invalid.\nInsert a valid URL.", details = e)
+            return
+        
+        if self.app.yt.is_valid_youtube_channel() == False:
+            self.app.yt.settings.save()
+            run_error("The Channel URL is invalid.\nInsert a valid YouTube Channel URL.")
+            return
         
         # Check the validity of the old saves
         waste = ""

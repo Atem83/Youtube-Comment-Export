@@ -19,12 +19,15 @@ class Settings():
         return self._channel_url
     
     @channel_url.setter
-    def channel_url(self, value: str):
-        if value == None:
+    def channel_url(self, value):
+        if value is None:
+            self._channel_url = None
             return
         elif not isinstance(value, str):
             msg = 'The channel URL must be a string'
-            raise TypeError(msg)
+            raise TypeError(
+                msg
+                )
         self._channel_url = str(value)
 
     @property
@@ -34,7 +37,7 @@ class Settings():
     
     @directory.setter
     def directory(self, value):
-        if value == None:
+        if value is None:
             return
         else:
             path = Path(value)

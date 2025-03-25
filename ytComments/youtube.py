@@ -1,3 +1,4 @@
+from numpy.strings import startswith
 import yt_dlp
 import polars as pl
 import xlsxwriter
@@ -27,7 +28,6 @@ class yt_manager(QThread):
         self.settings.channel_url = channel_url
         self.settings.directory = dir
         self._channel_data = None
-        self.refresh()
             
         self.old_save = old_save
         self.old_comments = None
@@ -151,11 +151,21 @@ class yt_manager(QThread):
     def refresh(self):
         """Refresh the channel data."""
         ydl_opts = {'quiet': True, 'extract_flat': True}
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            try:
+        try:
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 self._channel_data = ydl.extract_info(self.settings.channel_url, download=False)
-            except Exception as e:
-                raise RuntimeError(f'Error fetching data: {e}')
+        except Exception as e:
+            raise RuntimeError(
+                f'Error fetching data:\n{e}'
+                )
+
+    def is_valid_youtube_channel(self) -> bool:
+        """Check if the URL is a valid YouTube channel URL."""
+        if (self.channel_data.get('_type') == 'playlist' and 
+            self.channel_data.get('extractor').startswith('youtube')
+            ):
+            return True
+        return False
 
     def channel_videos(self, include_comments: bool = False) -> pl.DataFrame:
         """Returns a pl.DataFrame with videos data of the channel."""
