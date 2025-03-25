@@ -361,7 +361,7 @@ class yt_manager(QThread):
                     'child': {'align': 'center'},
                     'author': {'align': 'center'},
                     'date': {'align': 'center', 'num_format': self.settings.date_format},
-                    'text': {'align': 'left'}
+                    'text': {'align': 'left', 'text_wrap': True}
                 }
                 video_header = self.videos_header
                 comments_header = self.comments_header
