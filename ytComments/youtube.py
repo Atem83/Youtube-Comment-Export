@@ -449,6 +449,11 @@ class yt_manager(QThread):
                     comments = video[7]
                     if comments is not None:
                         ws_comment = wb.add_worksheet(video[1])
+                        
+                        # Limit the number of comments if they exceed Excel limit for a sheet
+                        limit = 1048576 - self.comments_header['row'] - 1
+                        if comments.shape[0] > limit:
+                            comments = comments[:limit]
                          
                         # Add a hyperlink to each comments sheet in the summary
                         ws_video.write_url(
