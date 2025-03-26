@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Check if the URL is a valid YouTube Channel URL
 - Added automatic line break for comments on Excel
 - Limit the number of comments on a sheet at a little less than 1 048 576
+- It's now possible to download comments from a single video
 
 ## [1.0.0] - 2025-03-23
 - First version of the application with all the essential features.

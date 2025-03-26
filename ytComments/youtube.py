@@ -34,6 +34,7 @@ class yt_manager(QThread):
         self.progress = 0
         self.duration = None
         self.finish = False
+        self._mono_video = None
             
     def __str__(self):
         init(autoreset=True)
@@ -58,8 +59,8 @@ class yt_manager(QThread):
         """Execution of the thread."""
         self.export_excel()
         self.finish = True
-        # Emit finished signal
-        self.finished.emit()
+        self._mono_video = None # Reset the mono video
+        self.finished.emit() # Emit finished signal
     
     @property
     def old_save(self) -> Path | list[Path]:
@@ -154,6 +155,12 @@ class yt_manager(QThread):
         try:
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 self._channel_data = ydl.extract_info(self.settings.channel_url, download=False)
+                
+                # Allow to download only one video
+                if self.channel_data.get('entries') is None:
+                    self._mono_video = self._channel_data.get('id')
+                    self.settings.channel_url = self._channel_data.get('channel_url')
+                    self._channel_data = ydl.extract_info(self.settings.channel_url, download=False)
         except Exception as e:
             raise RuntimeError(
                 f'Error fetching data:\n{e}'
@@ -193,15 +200,23 @@ class yt_manager(QThread):
                 nb_video += 1
                 
                 # Upload the new comments
-                if self.finish == False:
+                if ((self.finish == False and self._mono_video is None) or
+                    (self._mono_video and self._mono_video == video[0])
+                    ):
                     info = self.dl_comments(video)
                     comment = info['comments']
                     upload_date = info['upload_date']
                 # if the download window is cancelled early, add the saved untouched comments
-                elif self.finish == True and self.old_comments:
+                elif (self.finish == True or self._mono_video) and self.old_comments:
                     comment = self.old_comments[0].get(video[0])
                     if comment is None: continue # if the video doesn't exist in the save, skip to the next loop
                     upload_date = self.old_comments[1].get(video[0])
+                # if I'm in mono_video mode, continue the loop until the end
+                elif self._mono_video:
+                    comments.append(None)
+                    comments_count.append(0)
+                    upload_dates.append(None)
+                    continue
                 # if there isn't any save, finish the loop
                 else:
                     break
