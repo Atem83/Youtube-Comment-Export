@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from screeninfo import get_monitors
 
 class Settings():
     """Settings Manager to save and apply settings to the software."""
@@ -137,6 +138,32 @@ class Settings():
             return
         elif len(value) != 4:
             return
+        
+        # Check if the coordinates are within monitors coordinates
+        monitors = get_monitors()
+        x_min = 0
+        y_min = 0
+        x_max = 0
+        y_max = 0
+        for monitor in monitors:
+            if monitor.x < x_min:
+                x_min = monitor.x
+            if monitor.y < y_min:
+                y_min = monitor.y
+            if monitor.x + monitor.width > x_max:
+                x_max = monitor.x + monitor.width
+            if monitor.y + monitor.height > y_max:
+                y_max = monitor.y + monitor.height
+        
+        x_margin = 0
+        y_margin = 0
+        if value[0] < x_min + x_margin or value[0] + value[2] > x_max - x_margin:
+            self._window_size = (100, 100, 320, 170)
+            return
+        if value[1] < y_min + y_margin or value[1] + value[3] > y_max - y_margin:
+            self._window_size = (100, 100, 320, 170)
+            return
+        
         self._window_size = value
 
     def path_save(self):
