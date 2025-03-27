@@ -150,13 +150,14 @@ class MainWindow(QtWidgets.QFrame):
         # Save the settings
         self.app.yt.settings.save()
         
-        # Reset the finish value
+        # Reset somes values
         self.app.yt.finish = False
+        self.app.yt.old_comments = None # Reset the previous old save
         
         # Show the loading window
         loading_window = LoadingWindow(countdown=True)
-        loading_window.show()
         loading_window.update_progress(0)
+        loading_window.show()
         
         # Launch the program
         if old_saves is not None:
