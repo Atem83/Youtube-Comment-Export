@@ -13,6 +13,7 @@ class App(QMainWindow):
         # Initialize QApplication
         self.qapp = QApplication(sys.argv)
         self.yt = yt_manager()
+        self.yt.settings.load()
         
         # Initialize QMainWindow
         super().__init__()
@@ -66,7 +67,7 @@ class App(QMainWindow):
             )
         self.yt.settings.save()
         super().moveEvent(event)
-    
+        
     def dragEnterEvent(self, event):
         """Manage the drag-and-drop event.
         Only accept files."""
