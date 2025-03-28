@@ -199,7 +199,7 @@ class yt_manager(QThread):
             for video in df.iter_rows():
                 nb_video += 1
                 
-                # Upload the new comments
+                # Download the new comments
                 if ((self.finish == False and self._mono_video is None) or
                     (self._mono_video and self._mono_video == video[0])
                     ):
@@ -541,6 +541,7 @@ class yt_manager(QThread):
                 )
         
         dict_data = {}
+        upload_dict = {}
         for path in self.old_save:
             # Recover the upload date of each video
             upload_saved = pl.read_excel(
@@ -553,7 +554,6 @@ class yt_manager(QThread):
             )
             
             result_dict = upload_saved.select(['id', 'upload_date']).to_dict()
-            upload_dict = {}
             for i in range(len(result_dict["id"])):
                 upload_dict[result_dict["id"][i]] = result_dict["upload_date"][i]
             
