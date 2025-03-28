@@ -11,6 +11,7 @@ class Settings():
         self._bg_highlight = True
         self._max_sheets = 250
         self._date_format = 'DD/MM/YYYY'
+        self._oldest_to_newest = True
         self._auto_update = True
         self._window_size = (100, 100, 320, 170)
     
@@ -25,9 +26,8 @@ class Settings():
             self._channel_url = None
             return
         elif not isinstance(value, str):
-            msg = 'The channel URL must be a string'
             raise TypeError(
-                msg
+                f"The channel URL must be a string, not {type(value)}"
                 )
         self._channel_url = str(value)
 
@@ -83,6 +83,7 @@ class Settings():
     @bg_highlight.setter
     def bg_highlight(self, value):
         if not isinstance(value, bool):
+            print("bg highlight value must be a boolean, default value will be used")
             return
         self._bg_highlight = value
 
@@ -117,6 +118,18 @@ class Settings():
         self._date_format = value
 
     @property
+    def oldest_to_newest(self):
+        """Sort comments from oldest to newest."""
+        return self._oldest_to_newest
+
+    @oldest_to_newest.setter
+    def oldest_to_newest(self, value):
+        if not isinstance(value, bool):
+            print("oldest to newest value must be a boolean, default value will be used")
+            return
+        self._oldest_to_newest = value
+
+    @property
     def auto_update(self):
         """Allow or not the program to search for software updates at startup."""
         return self._auto_update
@@ -124,6 +137,7 @@ class Settings():
     @auto_update.setter
     def auto_update(self, value):
         if not isinstance(value, bool):
+            print("auto update value must be a boolean, default value will be used")
             return
         self._auto_update = value
 
@@ -182,6 +196,7 @@ class Settings():
             'bg_highlight': self.bg_highlight,
             'max_sheets': self.max_sheets,
             'date_format': self.date_format,
+            'oldest_to_newest': self.oldest_to_newest,
             'auto_update': self.auto_update,
             'window_size': self.window_size
             }
@@ -211,6 +226,7 @@ class Settings():
                 self.bg_highlight = settings["bg_highlight"]
                 self.max_sheets = settings["max_sheets"]
                 self.date_format = settings["date_format"]
+                self.oldest_to_newest = settings["oldest_to_newest"]
                 self.auto_update = settings["auto_update"]
                 self.window_size = tuple(settings["window_size"])
         except:

@@ -15,6 +15,7 @@ class SettingsWindow(QtWidgets.QDialog):
         layout.addLayout(self.init_highlight())
         layout.addLayout(self.init_max_sheets())
         layout.addLayout(self.init_date_format())
+        layout.addLayout(self.init_oldest_to_newest())
         layout.addLayout(self.init_auto_update())
         layout.addSpacing(10)
         layout.addLayout(self.init_buttons())
@@ -107,6 +108,26 @@ class SettingsWindow(QtWidgets.QDialog):
         date_layout.addWidget(self.date_input)
         return date_layout
     
+    def init_oldest_to_newest(self):
+        """Initialize the toggle for the oldest to newest order."""
+        msg = "Sort the comments"
+        
+        # Sort label
+        sort_label = QtWidgets.QLabel("Sort order :")
+        sort_label.setToolTip(msg)
+        
+        # Create dropdown menu
+        self.sort_combo = QtWidgets.QComboBox()
+        self.sort_combo.addItems(["Oldest to newest", "Newest to oldest"])
+        self.sort_combo.setCurrentIndex(0 if self.menu.app.yt.settings.oldest_to_newest else 1)
+        self.sort_combo.setToolTip(msg)
+        
+        # Sort layout
+        sort_layout = QtWidgets.QHBoxLayout()
+        sort_layout.addWidget(sort_label)
+        sort_layout.addWidget(self.sort_combo)
+        return sort_layout
+    
     def init_auto_update(self):
         """Initialize the toggle for the automatic update."""
         msg = "Allow or not the program to search for software updates at startup"
@@ -175,6 +196,10 @@ class SettingsWindow(QtWidgets.QDialog):
         # Validate the other settings
         self.menu.app.yt.settings.bg_highlight = bool(self.highlight_toggle.isChecked())
         self.menu.app.yt.settings.date_format = str(self.date_input.text())
+        if self.sort_combo.currentText() == "Oldest to newest":
+            self.menu.app.yt.settings.oldest_to_newest = True
+        else:
+            self.menu.app.yt.settings.oldest_to_newest = False
         self.menu.app.yt.settings.auto_update = bool(self.update_toggle.isChecked())
         self.menu.app.yt.settings.save()
         self.accept()

@@ -221,9 +221,21 @@ class yt_manager(QThread):
                 else:
                     break
                 
+                # Assign a number to each thread then sort them
+                comment = comment.with_columns(
+                    pl.when(pl.col('thread') == 'main')
+                    .then(pl.col('thread').cum_count() + 1)
+                    .alias('order')
+                )
+                comment = comment.with_columns(pl.col('order').forward_fill())
+                comment = comment.sort(
+                    'order', 
+                    descending=self.settings.oldest_to_newest,
+                    maintain_order=True
+                    ).drop('order')
+                
                 color_list = []
                 current_color = 'color2'
-
                 # Create a color column to switch color between each comment's thread
                 # I failed to create it using polars expressions
                 for value in comment['thread']:
@@ -323,12 +335,6 @@ class yt_manager(QThread):
                         )
                     df = pl.concat([comment, unmatching_df])
                 
-            # Add the column oldest_date
-            df = df.with_columns(
-                pl.col('date').min().over('id-parent').alias('oldest_date')
-            )
-
-            df = df.sort(['oldest_date', 'id-parent'], descending=False, maintain_order=True)
             df = df.select(['thread', 'author', 'date', 'text', 'id-parent', 'id-child'])
         else:
             # Create an empty dataframe if the video doesn't have any comments
