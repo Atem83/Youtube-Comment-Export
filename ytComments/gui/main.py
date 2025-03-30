@@ -163,7 +163,8 @@ class MainWindow(QtWidgets.QFrame):
         if old_saves is not None:
             try:
                 self.app.yt.import_excel()
-            except:
+            except Exception as e:
+                print(e)
                 run_error("Invalid save, choose a valid save")
                 loading_window.close()
                 return

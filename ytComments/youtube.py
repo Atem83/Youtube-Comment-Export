@@ -1,4 +1,3 @@
-from numpy.strings import startswith
 import yt_dlp
 import polars as pl
 import xlsxwriter
@@ -185,11 +184,15 @@ class yt_manager(QThread):
             'duration', 
             'view_count', 
             ])
-        df = df.reverse() # from oldest to newest
+        
+        # from oldest to newest
+        if self.settings.oldest_to_newest:
+            df = df.reverse() 
         
         # Add a column with the comments
         total_videos = len(df)
         nb_video = 0
+        self.progress = 0
         comments = []
         comments_count = []
         upload_dates = []
@@ -209,7 +212,11 @@ class yt_manager(QThread):
                 # if the download window is cancelled early, add the saved untouched comments
                 elif (self.finish == True or self._mono_video) and self.old_comments:
                     comment = self.old_comments[0].get(video[0])
-                    if comment is None: continue # if the video doesn't exist in the save, skip to the next loop
+                    if comment is None: # if the video doesn't exist in the save, skip to the next loop
+                        comments.append(None)
+                        comments_count.append(0)
+                        upload_dates.append(None)
+                        continue
                     upload_date = self.old_comments[1].get(video[0])
                 # if I'm in mono_video mode, continue the loop until the end
                 elif self._mono_video:
@@ -221,18 +228,12 @@ class yt_manager(QThread):
                 else:
                     break
                 
-                # Assign a number to each thread then sort them
+                # Sort the comments
+                comment = self._sort_comments(comment, self.settings.oldest_to_newest)
                 comment = comment.with_columns(
-                    pl.when(pl.col('thread') == 'main')
-                    .then(pl.col('thread').cum_count() + 1)
-                    .alias('order')
-                )
-                comment = comment.with_columns(pl.col('order').forward_fill())
-                comment = comment.sort(
-                    'order', 
-                    descending=self.settings.oldest_to_newest,
-                    maintain_order=True
-                    ).drop('order')
+                    pl.lit(self.settings.oldest_to_newest)
+                    .alias('oldest_to_newest')
+                    ) # save the sorting order to import later
                 
                 color_list = []
                 current_color = 'color2'
@@ -318,7 +319,7 @@ class yt_manager(QThread):
             # Add the new comments to the old comments
             if self.old_comments is not None:
                 if video[0] in self.old_comments[0]:
-                    comment = self.old_comments[0][video[0]].drop('color')
+                    comment = self.old_comments[0][video[0]]
                     matching_df = comment.join(
                         df, 
                         on=['id-parent', 'id-child'], 
@@ -333,7 +334,7 @@ class yt_manager(QThread):
                         join_nulls=True, 
                         maintain_order='left'
                         )
-                    df = pl.concat([comment, unmatching_df])
+                    df = pl.concat([unmatching_df, comment])
                 
             df = df.select(['thread', 'author', 'date', 'text', 'id-parent', 'id-child'])
         else:
@@ -347,6 +348,67 @@ class yt_manager(QThread):
                 'id-child': [],
             })
         return {'comments': df, 'upload_date': str(upload_date)}
+
+    def _sort_comments(self, df: pl.DataFrame, oldest_to_newest: bool) -> pl.DataFrame:
+        """Sort the comments in the dataframe."""
+        if not isinstance(df, pl.DataFrame):
+            raise ValueError(
+                "df must be a polars DataFrame"
+                )
+        if not isinstance(oldest_to_newest, bool):
+            raise ValueError(
+                "oldest_to_newest must be a boolean"
+                )
+        
+        # Count the number of threads
+        df = df.with_columns(
+            pl.when(pl.col('thread') == 'main')
+            .then(pl.col('thread').cum_count() + 1)
+            .alias('order-main')
+        )
+        
+        # Copy the number to their replies
+        df = df.with_columns(
+            pl.when(pl.col('thread') == 'reply')
+            .then(pl.col('order-main').max().over('id-parent'))
+            .otherwise(pl.col('order-main'))
+        )
+        
+        # Count the number of comments
+        df = df.with_row_index("order-reply", offset=2)
+        
+        # Rearrange the number when the reply (downloaded) is before the main (old)
+        # => Give them the last number of the thread
+        df = df.with_columns(
+            pl.when((pl.col('thread') == 'reply') & (pl.col('order-reply') < pl.col('order-main')))
+            .then(pl.col('order-reply').max().over('id-parent') + pl.col('order-reply').cum_sum().over('id-parent'))
+            .otherwise(pl.col('order-reply'))
+            .alias('order-reply')
+        )
+        
+        # Assign the value 1 for the main of each thread
+        df = df.with_columns(
+            pl.when(pl.col('thread') == 'main')
+            .then(1)
+            .otherwise(pl.col('order-reply'))
+            .alias('order-reply')
+        )
+        
+        # Rank the comments in each thread
+        df = df.with_columns(
+            pl.when(pl.col('thread') == 'reply')
+            .then(pl.col('order-reply').rank(method='ordinal').over('id-parent'))
+            .otherwise(pl.col('order-reply'))
+        )
+        
+        # Sort the comments by order
+        df = df.sort(
+            ['order-main', 'order-reply'], 
+            descending=[oldest_to_newest, False],
+            maintain_order=True
+            ).drop(['order-main', 'order-reply'])
+        
+        return df
 
     def export_excel(self):
         """Export the channel data to an Excel file."""
@@ -516,7 +578,7 @@ class yt_manager(QThread):
                             conditional_formats=conditional_col,
                             header_format={'bold':True, 'align':'center'},
                             autofit=True,
-                            hidden_columns=['color', 'id-parent', 'id-child'],
+                            hidden_columns=['color', 'oldest_to_newest', 'id-parent', 'id-child'],
                             freeze_panes=(comments_header['row'] + 1, comments_header['col'])
                         )
                                                 
@@ -577,6 +639,24 @@ class yt_manager(QThread):
             elif isinstance(data_saved, dict):
                 data_saved.pop('videos', None)
                 dict_data.update(data_saved)
+        
+        for key, df in dict_data.items():
+            # Sort the comments to be 'newest to oldest' by default
+            sort_order = df.get_column('oldest_to_newest')[0]
+            if sort_order:
+                df = self._sort_comments(df, sort_order)
                 
+            # Delete the useless columns to be recomputed and readded later
+            df = df.drop('oldest_to_newest', 'color')
+            
+            # Delete some noises in the comments
+            chars = ['_x000D_', '_x005F']
+            for char in chars:
+                df = df.with_columns(
+                    df["text"].str.replace_all(char, '', literal=False)
+                    )
+            
+            dict_data[key] = df
+        
         self.old_comments = (dict_data, upload_dict)
         

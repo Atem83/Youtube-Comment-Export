@@ -1,4 +1,5 @@
 from PySide6 import QtWidgets, QtGui, QtCore
+from numpy import True_
 from .error import run_error
 
 class SettingsWindow(QtWidgets.QDialog):
@@ -110,7 +111,7 @@ class SettingsWindow(QtWidgets.QDialog):
     
     def init_oldest_to_newest(self):
         """Initialize the toggle for the oldest to newest order."""
-        msg = "Sort the comments"
+        msg = "Sort the comments and the videos"
         
         # Sort label
         sort_label = QtWidgets.QLabel("Sort order :")
