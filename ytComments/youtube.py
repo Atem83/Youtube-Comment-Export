@@ -542,7 +542,7 @@ class yt_manager(QThread):
                         ws_video.write_url(
                             row=(video_header['row'] + int(video[0]) + 1), 
                             col=(video_header['col']), 
-                            url=('internal:' + video[1] + '!A1'), 
+                            url=('internal:' + f"'{video[1]}'" + '!A1'), 
                             cell_format=fmt_hyperlink, 
                             string=video[1]
                             )
