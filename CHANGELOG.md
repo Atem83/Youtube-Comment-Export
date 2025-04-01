@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix a bug where the upload_date is not retrieved from old saves
 - Fix somes bugs where the sort order of new replies are not applied correctly
 - Fix a bug where the internal link of the video sheet is not working
+- Fix a bug when the leading character in a comment is '='
 
 ## [1.0.0] - 2025-03-23
 - First version of the application with all the essential features.
