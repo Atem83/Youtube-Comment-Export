@@ -78,6 +78,7 @@ path_save2 = r'C:\Users\User\Desktop\Save File 2.xlsx'
 path_save = [path_save1, path_save2]
 
 yt = ytComments.yt_manager(channel_url, old_save=path_save)
+yt.refresh()
 yt.import_excel() # Import the old save data
 yt.export_excel() # Export the data in Excel files
 
