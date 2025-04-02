@@ -297,8 +297,13 @@ class yt_manager(QThread):
         # Create a dataframe from the comments
         df = pl.DataFrame(info['comments'])
         
-        # Remove the leading '=' in the comments text to avoid errors in Excel export
-        df = df.with_columns(pl.col("text").str.strip_chars_start('='))
+        # Add ' when the text starts with = to avoid errors in Excel export
+        df = df.with_columns(
+            pl.when(pl.col('text').str.starts_with('='))
+            .then("'" + pl.col('text'))
+            .otherwise(pl.col('text'))
+            .alias('text')
+            )
         
         if len(df) != 0:
             # Add the columns date, id-parent, id-child
