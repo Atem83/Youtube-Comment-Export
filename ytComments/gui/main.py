@@ -155,7 +155,7 @@ class MainWindow(QtWidgets.QFrame):
         self.app.yt.old_comments = None # Reset the previous old save
         
         # Show the loading window
-        loading_window = LoadingWindow(countdown=True)
+        loading_window = LoadingWindow(self.app, countdown=True)
         loading_window.update_progress(0)
         loading_window.show()
         
@@ -165,7 +165,7 @@ class MainWindow(QtWidgets.QFrame):
                 self.app.yt.import_excel()
             except Exception as e:
                 print(e)
-                run_error("Invalid save, choose a valid save")
+                run_error("Invalid save, choose a valid save", details = str(e))
                 loading_window.close()
                 return
         self.app.yt.start() # Execute the thread

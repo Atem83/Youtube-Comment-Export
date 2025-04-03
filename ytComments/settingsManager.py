@@ -23,7 +23,7 @@ class Settings():
     @channel_url.setter
     def channel_url(self, value):
         if value is None:
-            self._channel_url = None
+            self._channel_url = 'https://www.youtube.com/@GabbPiano'
             return
         elif not isinstance(value, str):
             raise TypeError(

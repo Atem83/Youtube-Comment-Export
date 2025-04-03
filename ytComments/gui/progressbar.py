@@ -16,8 +16,8 @@ class LoadingWindow(QDialog):
         
         if parent:
             self.parent = parent
-            x = self.parent.app.geometry().x()
-            y = self.parent.app.geometry().y()
+            x = self.parent.geometry().x()
+            y = self.parent.geometry().y()
         else:
             x = 100
             y = 100

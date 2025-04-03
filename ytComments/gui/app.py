@@ -114,7 +114,7 @@ class App(QMainWindow):
                 updater.update_software()
                 updater.show_file_location_message(updater.new_filedir)
                 self.close()
-                sys.exit(self.qapp.exec())
+                sys.exit()
             except Exception as e:
                 msg = "An error occurred during the update"
                 run_error(msg, details = e)
