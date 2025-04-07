@@ -325,7 +325,7 @@ class yt_manager(QThread):
                   .alias('thread')
             )
             
-            df = df.select(['thread', 'author', 'date', 'text', 'id-parent', 'id-child'])
+            df = df.select(['thread', 'author', 'like_count', 'date', 'text', 'id-parent', 'id-child'])
             # Add the new comments to the old comments
             if self.old_comments is not None:
                 if video[0] in self.old_comments[0]:
@@ -346,12 +346,13 @@ class yt_manager(QThread):
                         )
                     df = pl.concat([unmatching_df, comment])
                 
-            df = df.select(['thread', 'author', 'date', 'text', 'id-parent', 'id-child'])
+            df = df.select(['thread', 'author', 'like_count', 'date', 'text', 'id-parent', 'id-child'])
         else:
             # Create an empty dataframe if the video doesn't have any comments
             df = pl.DataFrame({
                 'thread': [],
                 'author': [],
+                'like_count': [],
                 'date': [],
                 'text': [],
                 'id-parent': [],
@@ -451,8 +452,8 @@ class yt_manager(QThread):
                 }
                 comments_col = {
                     'thread': {'align': 'center'},
-                    'child': {'align': 'center'},
                     'author': {'align': 'center'},
+                    'like_count': {'align': 'center'},
                     'date': {'align': 'center', 'num_format': self.settings.date_format},
                     'text': {'align': 'left', 'text_wrap': True}
                 }
@@ -565,7 +566,7 @@ class yt_manager(QThread):
                         
                         if self.settings.bg_highlight:
                             conditional_col = {
-                                ('thread', 'author', 'date', 'text'): [{
+                                ('thread', 'author', 'like_count', 'date', 'text'): [{
                                     'type': 'formula',
                                     'criteria': formula1,
                                     'format': {'bg_color': self.settings.bg_color[0]}
