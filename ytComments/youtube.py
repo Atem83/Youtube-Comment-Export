@@ -297,9 +297,11 @@ class yt_manager(QThread):
         # Create a dataframe from the comments
         df = pl.DataFrame(info['comments'])
         
-        # Add ' when the text starts with = to avoid errors in Excel export
+        # Add ' when the text starts with = or http to avoid errors in Excel export
         df = df.with_columns(
-            pl.when(pl.col('text').str.starts_with('='))
+            pl.when((pl.col('text').str.starts_with('=')) | 
+                    (pl.col('text').str.starts_with('http'))
+                    )
             .then("'" + pl.col('text'))
             .otherwise(pl.col('text'))
             .alias('text')
