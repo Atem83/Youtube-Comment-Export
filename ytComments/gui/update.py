@@ -4,7 +4,7 @@ import sys
 from PySide6.QtWidgets import QMessageBox
 from packaging.version import Version
 from .progressbar import LoadingWindow
-import ytComments.metadata as metadata
+from ..__about__ import __version__
 
 class UpdateManager:
     """Update Downloader of the software"""
@@ -90,7 +90,7 @@ class UpdateManager:
             return False
         
         latest_version = Version(latest_tag.lstrip('v'))
-        current_version = Version(metadata.version)
+        current_version = Version(__version__)
 
         return latest_version > current_version
 

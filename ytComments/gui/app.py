@@ -1,11 +1,11 @@
 import sys
-import ytComments.metadata as metadata
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from ytComments import yt_manager
 from .menu import MenuBar
 from .main import MainWindow
 from .update import UpdateManager
 from .error import run_error
+from ..__about__ import __title__, __url__, __author__, __license__, __description__
 
 class App(QMainWindow):
     """Main application class."""
@@ -17,7 +17,7 @@ class App(QMainWindow):
         
         # Initialize QMainWindow
         super().__init__()
-        self.setWindowTitle(metadata.name)
+        self.setWindowTitle(__title__)
         self.setGeometry(
             self.yt.settings.window_size[0],
             self.yt.settings.window_size[1],
@@ -92,7 +92,7 @@ class App(QMainWindow):
     def check_for_updates(self):
         """Check for updates."""
         repo_owner, repo_name = self.menu_bar.about_dialog.extract_repo_info(
-            metadata.url
+            __url__
             )
         updater = UpdateManager(repo_owner, repo_name, self)
         reply = None

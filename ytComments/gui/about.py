@@ -1,8 +1,8 @@
 import re
-import ytComments.metadata as metadata
 from PySide6 import QtWidgets, QtCore, QtGui
 from .update import UpdateManager
 from .error import run_error
+from ..__about__ import __version__, __url__, __author__, __license__, __description__
 
 class AboutWindow(QtWidgets.QDialog):
     """About menu of the application"""
@@ -31,7 +31,7 @@ class AboutWindow(QtWidgets.QDialog):
         """Version number and search update button."""
         self.layout_version = QtWidgets.QHBoxLayout()
         version_label = QtWidgets.QLabel("Version : ")
-        version_text = QtWidgets.QLabel(metadata.version)
+        version_text = QtWidgets.QLabel(__version__)
 
         # Add the button to check for updates
         self.check_update_button = QtWidgets.QPushButton("Check updates")
@@ -47,7 +47,7 @@ class AboutWindow(QtWidgets.QDialog):
         """Program Author."""
         self.layout_author = QtWidgets.QHBoxLayout()
         author_label = QtWidgets.QLabel("Author : ")
-        author_text = QtWidgets.QLabel(metadata.author)
+        author_text = QtWidgets.QLabel(__author__)
 
         self.layout_author.addWidget(author_label)
         self.layout_author.addWidget(author_text)
@@ -57,12 +57,12 @@ class AboutWindow(QtWidgets.QDialog):
         """License and code source url."""
         self.layout_license = QtWidgets.QHBoxLayout()
         license_label = QtWidgets.QLabel("License : ")
-        license_text = QtWidgets.QLabel(metadata.license)
+        license_text = QtWidgets.QLabel(__license__)
         
         url_button = QtWidgets.QPushButton("code source")
         url_button.setStyleSheet(self.style_link())
         url_button.clicked.connect(
-            lambda: QtGui.QDesktopServices.openUrl(QtCore.QUrl(metadata.url))
+            lambda: QtGui.QDesktopServices.openUrl(QtCore.QUrl(__url__))
             )
 
         self.layout_license.addWidget(license_label)
@@ -73,7 +73,7 @@ class AboutWindow(QtWidgets.QDialog):
     def init_description(self):
         """Software description."""
         self.layout_description = QtWidgets.QHBoxLayout()
-        description_text = QtWidgets.QLabel(metadata.description)
+        description_text = QtWidgets.QLabel(__description__)
         self.layout_description.addWidget(description_text)
         
     def style_link(self):
@@ -111,7 +111,7 @@ class AboutWindow(QtWidgets.QDialog):
         self.check_update_button.setText("Checking for updates...")
         QtWidgets.QApplication.processEvents()
         
-        repo_owner, repo_name = self.extract_repo_info(metadata.url)
+        repo_owner, repo_name = self.extract_repo_info(__url__)
         updater = UpdateManager(repo_owner, repo_name, self)
         if updater.check_updates():
             self.check_update_button.setText("Downloading update...")

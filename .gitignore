@@ -12,3 +12,5 @@ config pyinstaller.json
 
 # Others
 launch.py
+test.py
+.venv

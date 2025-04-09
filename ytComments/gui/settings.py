@@ -1,5 +1,4 @@
 from PySide6 import QtWidgets, QtGui, QtCore
-from numpy import True_
 from .error import run_error
 
 class SettingsWindow(QtWidgets.QDialog):

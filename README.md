@@ -59,6 +59,14 @@ pip install Youtube-Comment-Export
 
 </div>
 
+
+<h2 align="center"> CLI Usage </h2>
+
+```bash
+# To launch the GUI
+ytComments-gui
+```
+
 <h2 align="center"> GUI Usage </h2>
 
 ```python
@@ -67,6 +75,8 @@ import ytComments
 app = ytComments.App()
 app.run()
 ```
+
+
 <h2 align="center"> Python Usage </h2>
 
 ```python
