@@ -54,7 +54,7 @@ class MainWindow(QtWidgets.QFrame):
     
     def init_exe(self):
         """Initialize the execute button."""
-        exe_button = QtWidgets.QPushButton("Execute")
+        exe_button = QtWidgets.QPushButton("Start")
         exe_button.clicked.connect(self.execute)
         layout = QtWidgets.QHBoxLayout()
         layout.addWidget(exe_button)

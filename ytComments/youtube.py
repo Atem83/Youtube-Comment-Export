@@ -1,7 +1,7 @@
+import time
 import yt_dlp
 import polars as pl
 import xlsxwriter
-import time
 from pathlib import Path
 from colorama import Fore, init
 from PySide6.QtCore import QThread, Signal
@@ -15,7 +15,7 @@ class yt_manager(QThread):
     def __init__(
         self, 
         channel_url: str | None = None, 
-        dir: str | Path | None = None, 
+        directory: str | Path | None = None, 
         old_save: str | list[str] | None = None
         ):
         super().__init__()
@@ -25,7 +25,7 @@ class yt_manager(QThread):
         self.settings.load()
         
         self.settings.channel_url = channel_url
-        self.settings.directory = dir
+        self.settings.directory = directory
         self._channel_data = None
             
         self.old_save = old_save

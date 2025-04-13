@@ -131,7 +131,7 @@ class Settings():
 
     @property
     def auto_update(self):
-        """Allow or not the program to search for software updates at startup."""
+        """Allow or not the GUI to search for software updates at startup."""
         return self._auto_update
 
     @auto_update.setter
@@ -143,7 +143,7 @@ class Settings():
 
     @property
     def window_size(self):
-        """Size of the window."""
+        """Size of the GUI window."""
         return self._window_size
 
     @window_size.setter

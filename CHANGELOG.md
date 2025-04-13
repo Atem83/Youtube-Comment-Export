@@ -4,8 +4,11 @@ All notable changes to this project will be documented in this file.
 This format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
+## [1.1.2] - 2025-04-13
 - Fix a bug when the leading character in a comment is a link
 - Add the number of likes to the comments
+- Fix somes bugs to make the pip install and cli works correctly
+- Add more examples to the README file
 
 ## [1.1.1] - 2025-04-03
 - Fix a bug with the update process
