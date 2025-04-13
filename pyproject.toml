@@ -31,4 +31,4 @@ src = "setup.cfg"
 
 [[tool.tbump.file]]
 src = "ytComments/__about__.py"
-version_template = "__version__ = \"{new_version}\""
+search = "__version__ = \"{current}\""
