@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Permettre à la fenêtre de téléchargement d'être au dessus de la fenêtre du logiciel mais en dessous des autres applications
 - Rajouter une colonne pour les "like" de l'auteur de la chaine sur les commentaires
 
+## [1.1.4] - 2026-10-11
+- Delete the Window on Top flag for the progress bar
+
 ## [1.1.3] - 2026-10-11
 - Add a requirements file
 - yt_dlp has been updated to fix some bugs

@@ -24,7 +24,8 @@ class LoadingWindow(QDialog):
         self.setGeometry(x, y, 300, 100)
         
         # Delete the Windows title buttons
-        self.setWindowFlags(Qt.Window | Qt.WindowTitleHint | Qt.WindowStaysOnTopHint)
+        self.setWindowFlags(Qt.Window | Qt.WindowTitleHint)
+        # Qt.WindowStaysOnTopHint to stay on top of other windows
 
         # Initialize a close event
         self.closing = False
