@@ -50,7 +50,7 @@ class App(QMainWindow):
         """Execute actions when the main window is resized."""
         self.yt.settings.window_size = (
             self.x(),
-            self.y(),
+            self.y() + 31,
             self.width(), 
             self.height()
             )
@@ -61,7 +61,7 @@ class App(QMainWindow):
         """Execute actions when the main window is moved."""
         self.yt.settings.window_size = (
             self.x(),
-            self.y(),
+            self.y() + 31,
             self.width(), 
             self.height()
             )

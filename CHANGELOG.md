@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 This format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
+- Permettre à la fenêtre de téléchargement d'être au dessus de la fenêtre du logiciel mais en dessous des autres applications
+- Rajouter une colonne pour les "like" de l'auteur de la chaine sur les commentaires
+
+## [1.1.3] - 2026-10-11
+- Add a requirements file
+- yt_dlp has been updated to fix some bugs
+
 ## [1.1.2] - 2025-04-13
 - Fix a bug when the leading character in a comment is a link
 - Add the number of likes to the comments

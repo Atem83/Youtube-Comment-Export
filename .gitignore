@@ -13,4 +13,6 @@ config pyinstaller.json
 # Others
 launch.py
 test.py
-.venv
+venv
+*.code-workspace
+auto-py-to-exe*
